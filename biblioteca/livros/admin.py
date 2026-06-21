@@ -1,8 +1,14 @@
 from django.contrib import admin
-from .models import Livros, Categoria, Disponivel
+from .models import Livro, Categoria, Tag
 
-admin.site.register(Livros)
+class LivroAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'autor', 'categoria', 'data_retirada', 'devolucao')
+    readonly_fields = ('devolucao',)
+    filter_horizontal = ('tags',)
+
+
 admin.site.register(Categoria)
-admin.site.register(Disponivel)
+admin.site.register(Tag)
+admin.site.register(Livro, LivroAdmin)
 
 

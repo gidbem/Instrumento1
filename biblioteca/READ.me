@@ -1,0 +1,41 @@
+Qual problema o sistema resolve?
+
+O sistema resolve o problema de controle de empréstimo de livros em uma biblioteca.
+Ele permite cadastrar as informações (livros, suas categorias e temas/assuntos) e registrar a retirada de um livro por um leitor,
+calculando automaticamente a data limite para devolução, sem que o bibliotecário precise calcular isso manualmente. Facilitando,
+portanto, o manuseio e o controle dos empréstimos realizados.
+
+________________________________________________________________________________________________________________________
+Diagrama/Descrição dos Modelos:
+
+O projeto é composto por 3 modelos inter-relacionados:
+
+Categoria
+Representa o gênero literário do livro (ex: Romance, Ficção, História, Terror).
+
+Tag
+Representa assuntos/temas que podem se repetir entre diferentes livros (ex: Guerra, Amor, Mistério, Amizade).
+
+Livro
+Representa um exemplar das informações principais que compõe o livro e a regra de negócio de devolução.
+
+________________________________________________________________________________________________________________________
+Como elas se relacionam?
+
+Categoria → Livro (Relacionamento 1xN): uma categoria pode estar associada a vários livros,
+mas cada livro pertence a apenas uma categoria. (ForeignKey)
+
+Livro ↔ Tag (Relacionamento NxM): um livro pode ter várias tags/assuntos, e uma mesma tag pode
+estar presente em vários livros diferentes. (ManyToManyField)
+
+________________________________________________________________________________________________________________________
+Justificativa Técnica:
+
+No meu modelo Livro, utilizei o on_delete=models.CASCADE porque, no contexto de uma biblioteca, um livro
+precisa estar associado a uma categoria pois a categoria é uma informação estrutural do livro, e não algo opcional.
+
+Caso o registro pai seja excluído: se uma Categoria (por exemplo, "Romance") for excluída do sistema,
+todos os livros cadastrados com essa categoria serão excluídos automaticamente junto com ela. Essa decisão evita que o
+banco fique com livros "órfãos", sem nenhuma categoria válida associada, o que geraria inconsistência nos dados, quebrando
+a regra de que todo livro deve ter uma categoria.
+
